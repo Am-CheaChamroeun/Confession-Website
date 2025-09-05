@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confession to B Kosal</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <div class="stars"></div>
+            <div class="hero-content">
+                <h1 class="main-title">Anonymous Confessions</h1>
+                <p class="subtitle">Share your thoughts safely and anonymously to B Kosal</p>
+                <div class="privacy-badge">
+                    <span>🔒 100% Anonymous</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="confession-section">
+            <div class="confession-form-container">
+                <h2>What's on your mind?</h2>
+                <form id="confessionForm" class="confession-form">
+                    <div class="form-group">
+                        <label for="confession-text">Your confession:</label>
+                        <textarea 
+                            id="confession-text" 
+                            name="confession"
+                            placeholder="Share what's on your heart... Your identity will never be revealed."
+                            maxlength="1000"
+                            required
+                        ></textarea>
+                        <div class="char-counter">
+                            <span id="char-count">0</span>/1000 characters
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category (optional):</label>
+                        <select id="category" name="category">
+                            <option value="">Choose a category...</option>
+                            <option value="personal">Personal</option>
+                            <option value="relationship">Relationship</option>
+                            <option value="work">Work/School</option>
+                            <option value="family">Family</option>
+                            <option value="regret">Regret</option>
+                            <option value="gratitude">Gratitude</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Send Anonymous Confession</span>
+                        <span class="btn-icon">✨</span>
+                    </button>
+                </form>
+
+                <div id="success-message" class="success-message hidden">
+                    <div class="success-content">
+                        <h3>✨ Your confession has been sent!</h3>
+                        <p>Thank you for sharing. Your message has been delivered anonymously to B Kosal.</p>
+                        <button id="send-another" class="secondary-btn">Send Another Confession</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <section class="features">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Completely Anonymous</h3>
+                    <p>No tracking, no logging, no way to trace back to you</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💝</div>
+                    <h3>Safe Space</h3>
+                    <p>Share your thoughts without judgment in a secure environment</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Delivery</h3>
+                    <p>Your message is delivered immediately to B Kosal</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Public Confessions Section -->
+        <section id="confessions-section" class="confessions-section">
+            <div class="confessions-container-public">
+                <div class="confessions-header">
+                    <h2>💭 Anonymous Confessions</h2>
+                    <p>See what others have shared anonymously</p>
+                </div>
+                
+                <div class="confessions-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-confessions">0</span>
+                        <span class="stat-label">Total Confessions</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="today-confessions">0</span>
+                        <span class="stat-label">Today</span>
+                    </div>
+                </div>
+
+                <div class="confessions-display">
+                    <div id="confessions-list" class="confessions-list">
+                        <div class="no-confessions">
+                            <p>📭 No confessions yet. Be the first to share your thoughts!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>🌟 Made with care for anonymous expression</p>
+                <div class="footer-links">
+                    <span>Privacy First</span>
+                    <span>•</span>
+                    <span>No Data Collection</span>
+                    <span>•</span>
+                    <span>Secure & Safe</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="./main.js"></script>
+</body>
+</html>

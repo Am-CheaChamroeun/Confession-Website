@@ -49,18 +49,29 @@ document.addEventListener('DOMContentLoaded', function() {
             recipient: 'B Kosal'
         };
         
-        setTimeout(() => {
-            saveConfession(confessionData);
-            showSuccessMessage();
-            this.reset();
-            charCount.textContent = '0';
-            charCount.style.color = '#666';
-            
-            submitBtn.style.opacity = '1';
-            submitBtn.style.transform = 'scale(1)';
-            submitBtn.querySelector('.btn-text').textContent = 'Send Anonymous Confession';
-            submitBtn.disabled = false;
-        }, 1500);
+        saveConfession(confessionData)
+            .then(() => {
+                setTimeout(() => {
+                    showSuccessMessage();
+                    this.reset();
+                    charCount.textContent = '0';
+                    charCount.style.color = '#666';
+                    
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.transform = 'scale(1)';
+                    submitBtn.querySelector('.btn-text').textContent = 'Send Anonymous Confession';
+                    submitBtn.disabled = false;
+                }, 500);
+            })
+            .catch((error) => {
+                console.error('Error saving confession:', error);
+                showNotification('Failed to send confession. Please try again.', 'error');
+                
+                submitBtn.style.opacity = '1';
+                submitBtn.style.transform = 'scale(1)';
+                submitBtn.querySelector('.btn-text').textContent = 'Send Anonymous Confession';
+                submitBtn.disabled = false;
+            });
     });
     
     sendAnotherBtn.addEventListener('click', function() {
@@ -76,22 +87,30 @@ document.addEventListener('DOMContentLoaded', function() {
         return 'confession_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
     
-    function saveConfession(data) {
+    async function saveConfession(data) {
         try {
-            let confessions = JSON.parse(localStorage.getItem('confessions') || '[]');
-            confessions.unshift(data);
+            const response = await fetch('/api/confessions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
             
-            if (confessions.length > 100) {
-                confessions = confessions.slice(0, 100);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to save confession');
             }
             
-            localStorage.setItem('confessions', JSON.stringify(confessions));
+            const result = await response.json();
             
-            const event = new CustomEvent('newConfession', { detail: data });
+            const event = new CustomEvent('newConfession', { detail: result.confession });
             window.dispatchEvent(event);
             
+            return result;
         } catch (error) {
-            console.log('Storage not available, confession sent anonymously');
+            console.error('Error saving confession:', error);
+            throw error;
         }
     }
     
@@ -169,10 +188,16 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
     
-    window.getConfessions = function() {
+    window.getConfessions = async function() {
         try {
-            return JSON.parse(localStorage.getItem('confessions') || '[]');
-        } catch {
+            const response = await fetch('/api/confessions');
+            if (!response.ok) {
+                throw new Error('Failed to fetch confessions');
+            }
+            const data = await response.json();
+            return data.confessions || [];
+        } catch (error) {
+            console.error('Error fetching confessions:', error);
             return [];
         }
     };
@@ -212,10 +237,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load confessions when page loads
     loadConfessions();
 
-    function loadConfessions() {
-        const confessions = getConfessions();
-        updateStats(confessions);
-        displayConfessions(confessions);
+    async function loadConfessions() {
+        try {
+            const confessions = await getConfessions();
+            updateStats(confessions);
+            displayConfessions(confessions);
+        } catch (error) {
+            console.error('Error loading confessions:', error);
+            displayConfessions([]);
+        }
     }
 
     function updateStats(confessions) {

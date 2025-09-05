@@ -97,15 +97,9 @@ export default async function handler(req, res) {
     try {
       const { id, confession, category, recipient, timestamp } = req.body;
       
-      if (!confession || confession.trim().length < 10) {
+      if (!confession || confession.trim().length === 0) {
         return res.status(400).json({
-          error: 'Confession must be at least 10 characters long'
-        });
-      }
-      
-      if (confession.length > 1000) {
-        return res.status(400).json({
-          error: 'Confession must be less than 1000 characters'
+          error: 'Please write your confession before submitting'
         });
       }
       

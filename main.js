@@ -9,13 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentLength = this.value.length;
         charCount.textContent = currentLength;
         
-        if (currentLength > 800) {
-            charCount.style.color = '#ff6b6b';
-        } else if (currentLength > 600) {
-            charCount.style.color = '#ffa726';
-        } else {
-            charCount.style.color = '#666';
-        }
+        charCount.style.color = '#666';
     });
 
     confessionForm.addEventListener('submit', function(e) {
@@ -30,10 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        if (confession.length < 10) {
-            showNotification('Your confession seems a bit short. Please share more if you feel comfortable.', 'warning');
-            return;
-        }
         
         const submitBtn = this.querySelector('.submit-btn');
         submitBtn.style.opacity = '0.7';
